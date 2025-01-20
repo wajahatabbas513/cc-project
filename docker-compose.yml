@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    container_name: app1
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app1:/app
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile2
+    container_name: app2
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./app2:/app
+      - ./app1/data.db:/app/data.db  # Mount the file (not a directory)
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
